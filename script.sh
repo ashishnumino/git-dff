@@ -1,3 +1,6 @@
-# awk '{$1=$1};1' will trim the leading/trailing spaces
-
-diffwithline= sdiff one.ini two.ini | cat -n | grep "<" | awk '{$1=$1};1'
+NEWPROPERTIES=$(diff -y one.ini two.ini | tr -d '[:blank:]' | cat -n | grep '[<]' | sed 's/<$//' | sed 's/ //g')
+while read -r line ; do
+    lineno=$(echo $line | awk '{print $1}')
+    val=$(echo $line | awk '{print $2}')
+    ex -s -c "${lineno}i|$val" -c x two.ini
+done <<< "$NEWPROPERTIES"
