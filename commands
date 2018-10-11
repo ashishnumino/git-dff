@@ -1,0 +1,2 @@
+Command to add line numbers to diff
+diff -y one.ini two.ini | cat -n | grep -v -e '($'
